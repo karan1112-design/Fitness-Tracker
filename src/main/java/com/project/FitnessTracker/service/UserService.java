@@ -16,21 +16,27 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     public UserResponse register(RegisterRequest request) {
-        User user = new User(
-                null,
-                request.getEmail(),
-                request.getPassword(),
-                request.getFirstName(),
-                request.getLastName(),
-                Instant.parse("2026-05-27T15:03:37.839Z")
-                        .atZone(ZoneOffset.UTC)
-                        .toLocalDateTime(),
-                Instant.parse("2026-05-27T15:03:37.839Z")
-                        .atZone(ZoneOffset.UTC)
-                        .toLocalDateTime(),
-                List.of(),
-                List.of()
-        );
+        User user = User.builder()
+                .email(request.getEmail())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .password(request.getPassword())
+                .build();
+//        User user = new User(
+//                null,
+//                request.getEmail(),
+//                request.getPassword(),
+//                request.getFirstName(),
+//                request.getLastName(),
+//                Instant.parse("2026-05-27T15:03:37.839Z")
+//                        .atZone(ZoneOffset.UTC)
+//                        .toLocalDateTime(),
+//                Instant.parse("2026-05-27T15:03:37.839Z")
+//                        .atZone(ZoneOffset.UTC)
+//                        .toLocalDateTime(),
+//                List.of(),
+//                List.of()
+//        );
 
         User savedUser = userRepository.save(user);
         return maptoResponse(savedUser);

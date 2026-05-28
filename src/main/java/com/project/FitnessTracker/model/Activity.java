@@ -3,10 +3,13 @@ package com.project.FitnessTracker.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
@@ -19,6 +22,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Activity { // step 2
     @Id@GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -31,15 +35,17 @@ public class Activity { // step 2
     @Enumerated(EnumType.STRING) //tells Hibernate how to store an enum value in the database column
     private ActivityType type;
 
-    private Integer duration;
-    private Integer caloriesBurned;
-
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "json")
     private Map<String, Object> additionalMetrics;
 
+    private Integer duration;
+    private Integer caloriesBurned;
     private LocalDateTime startTime;
+
+    @CreationTimestamp
     private LocalDateTime createdAt;
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "activity",cascade = CascadeType.ALL,orphanRemoval = true)
